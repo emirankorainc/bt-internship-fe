@@ -15,6 +15,8 @@ const routeNames = {
   root: (params?: Record<string, string>): string => generateRoute('/', params),
   contact: (params?: Record<string, string>): string =>
     generateRoute('/contact', params),
+  buckets: (params?: Record<string, string>): string =>
+    generateRoute('/buckets', params),
 };
 
 export default routeNames;

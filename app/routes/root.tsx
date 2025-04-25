@@ -5,6 +5,7 @@ import { queryClient } from '../utils/query-client.ts';
 import routeNames from './route-names.tsx';
 import { Contact } from '@app/pages/Contact.tsx';
 import { Home } from '@app/pages/Home.tsx';
+import { Buckets } from '@app/pages/Buckets.tsx';
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: routeNames.contact(),
     element: <Contact />,
+  },
+  {
+    path: routeNames.buckets(),
+    element: <Buckets />,
   },
 ]);
 
