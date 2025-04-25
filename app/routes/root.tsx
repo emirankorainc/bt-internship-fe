@@ -6,6 +6,7 @@ import routeNames from './route-names.tsx';
 import { Contact } from '@app/pages/Contact.tsx';
 import { Home } from '@app/pages/Home.tsx';
 import { Buckets } from '@app/pages/Buckets.tsx';
+import { BucketDetail } from '@app/features/buckets/BucketDetail.tsx';
 
 const router = createBrowserRouter([
   {
@@ -18,7 +19,11 @@ const router = createBrowserRouter([
   },
   {
     path: routeNames.buckets(),
-    element: <Buckets />,
+    // element: <Buckets />,
+    children: [
+      { index: true, Component: Buckets },
+      { path: ':id', Component: BucketDetail },
+    ],
   },
 ]);
 
