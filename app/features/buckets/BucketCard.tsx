@@ -6,6 +6,7 @@ import {
 } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
+import { useNavigate } from 'react-router-dom';
 
 interface TempBucket {
   title: string;
@@ -15,9 +16,13 @@ interface TempBucket {
 
 export const BucketCard = ({ bucket }: { bucket: TempBucket }) => {
   const { title, description, levels } = bucket;
+  const navigate = useNavigate();
 
   return (
-    <Card className="w-full max-w-xs rounded-3xl border-2 p-2">
+    <Card
+      className="w-full max-w-xs rounded-3xl border-2 p-2"
+      onClick={() => navigate(title)}
+    >
       <CardHeader className="pb-2">
         <h2 className="text-xl font-bold tracking-tight">{title}</h2>
       </CardHeader>
