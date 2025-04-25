@@ -18,10 +18,14 @@ export const BucketCard = ({ bucket }: { bucket: TempBucket }) => {
   const { title, description, levels } = bucket;
   const navigate = useNavigate();
 
+  function navigateTo(): void {
+    navigate(title);
+  }
+
   return (
     <Card
       className="w-full max-w-xs rounded-3xl border-2 p-2"
-      onClick={() => navigate(title)}
+      onClick={navigateTo}
     >
       <CardHeader className="pb-2">
         <h2 className="text-xl font-bold tracking-tight">{title}</h2>
@@ -40,7 +44,10 @@ export const BucketCard = ({ bucket }: { bucket: TempBucket }) => {
         </div>
       </CardContent>
       <CardFooter>
-        <Button variant="outline" className="w-full rounded-md">
+        <Button
+          variant="outline"
+          className="pointer w-full cursor-pointer rounded-md"
+        >
           Edit Bucket
         </Button>
       </CardFooter>
