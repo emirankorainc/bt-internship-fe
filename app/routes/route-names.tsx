@@ -19,6 +19,18 @@ const routeNames = {
     generateRoute('/buckets', params),
   bucketDetail: (params?: Record<string, string>): string =>
     generateRoute('/buckets/:id', params),
+  dashboard: (params?: Record<string, string>): string =>
+    generateRoute('/dashboard', params),
+  evaluation: (params?: Record<string, string>): string =>
+    generateRoute('/evaluation', params),
+  roles: (params?: Record<string, string>): string =>
+    generateRoute('/roles', params),
+  teams: (params?: Record<string, string>): string =>
+    generateRoute('/teams', params),
+  users: (params?: Record<string, string>): string =>
+    generateRoute('/users', params),
+  people: (params?: Record<string, string>): string =>
+    generateRoute('/people', params),
 };
 
 export default routeNames;
