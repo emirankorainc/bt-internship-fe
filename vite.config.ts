@@ -11,7 +11,7 @@ export default ({ mode }: { mode: string }) => {
   process.env.NODE_ENV = mode === 'test' ? 'test' : 'development';
 
   return defineConfig({
-    plugins: [react(), tsconfigPaths(), tailwindcss(),],
+    plugins: [react(), tsconfigPaths(), tailwindcss()],
     server: {
       host: process.env.VITE_HOST,
       port: parseInt(process.env.VITE_PORT || ''),

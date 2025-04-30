@@ -10,6 +10,9 @@ const generateRoute = (unsafeRoute: string, params: Record<string, string | null
 
 const routeNames = {
   root: (params?: Record<string, string>): string => generateRoute('/', params),
+  login: (params?: Record<string, string>): string => generateRoute('/login', params),
+  register: (params?: Record<string, string>): string => generateRoute('/register', params),
+  dashboard: (params?: Record<string, string>): string => generateRoute('/dashboard', params),
   people: (params?: Record<string, string>): string => generateRoute('/people', params),
   buckets: (params?: Record<string, string>): string => generateRoute('/buckets', params),
   evaluation: (params?: Record<string, string>): string => generateRoute('/evaluation', params),

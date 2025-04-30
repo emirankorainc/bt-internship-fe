@@ -12,8 +12,13 @@ import { Evaluation } from '@app/pages/Evaluation.tsx';
 import { Teams } from '@app/pages/Teams.tsx';
 import { Users } from '@app/pages/Users.tsx';
 import { Roles } from '@app/pages/Roles.tsx';
+import { useAuth } from '@app/provider/authProvider.tsx';
+import { Login } from '@app/pages/Login.tsx';
+import { ProtectedRoute } from './ProtectedRoute.tsx';
+import { Dashboard } from '@app/pages/Dashboard.tsx';
+import { Register } from '@app/pages/Register.tsx';
 
-const router = createBrowserRouter([
+const routesForPublic = [
   {
     path: '/',
     element: <Layout />,
@@ -21,6 +26,44 @@ const router = createBrowserRouter([
       {
         path: routeNames.root(),
         element: <Home />,
+      },
+      {
+        path: routeNames.contact(),
+        element: <Contact />,
+      },
+    ],
+  },
+];
+
+const routesForNotAuthenticated = [
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      {
+        path: routeNames.login(),
+        element: <Login />,
+      },
+      {
+        path: routeNames.register(),
+        element: <Register />,
+      },
+    ],
+  },
+];
+
+const routesForAuthenticated = [
+  {
+    path: '/',
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
+    children: [
+      {
+        path: routeNames.dashboard(),
+        element: <Dashboard />,
       },
       {
         path: routeNames.people(),
@@ -46,15 +89,19 @@ const router = createBrowserRouter([
         path: routeNames.roles(),
         element: <Roles />,
       },
-      {
-        path: routeNames.contact(),
-        element: <Contact />,
-      },
     ],
   },
-]);
+];
 
 export default function Root() {
+  const { token } = useAuth();
+
+  const router = createBrowserRouter([
+    ...routesForPublic,
+    ...(!token ? routesForNotAuthenticated : []),
+    ...routesForAuthenticated,
+  ]);
+
   return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />

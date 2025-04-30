@@ -1,8 +1,11 @@
+import AuthProvider from './provider/authProvider';
 import Root from './routes/root';
 
 function App() {
   return (
-    <Root />
+    <AuthProvider>
+      <Root />
+    </AuthProvider>
   );
 }
 
