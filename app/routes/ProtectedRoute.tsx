@@ -1,17 +1,18 @@
-import { useAuth } from '@app/provider/authProvider';
-import { ReactNode } from 'react';
+import { useCheckAuth } from '@app/hooks/useCheckAuth';
 import { Navigate } from 'react-router-dom';
+import routeNames from './route-names';
+import { useAuth } from '@app/provider/authProvider';
+import { Layout } from '@app/components/layout/Layout';
 
-interface ProtectedRouteProps {
-  children: ReactNode;
-}
+export const ProtectedRoute = () => {
+  const { isLoading } = useCheckAuth();
+  const { isAuthenticated } = useAuth();
 
-export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { token } = useAuth();
+  if (isLoading) return null;
 
-  if (!token) {
-    return <Navigate to="/login" />;
+  if (!isAuthenticated && !isLoading) {
+    return <Navigate to={routeNames.login()} />;
   }
 
-  return <>{children}</>;
+  return <Layout />;
 };

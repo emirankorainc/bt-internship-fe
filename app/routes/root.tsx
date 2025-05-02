@@ -12,26 +12,18 @@ import { Evaluation } from '@app/pages/Evaluation.tsx';
 import { Teams } from '@app/pages/Teams.tsx';
 import { Users } from '@app/pages/Users.tsx';
 import { Roles } from '@app/pages/Roles.tsx';
-import { useAuth } from '@app/provider/authProvider.tsx';
 import { Login } from '@app/pages/Login.tsx';
 import { ProtectedRoute } from './ProtectedRoute.tsx';
 import { Dashboard } from '@app/pages/Dashboard.tsx';
 import { Register } from '@app/pages/Register.tsx';
+import { useMemo } from 'react';
+import { useAuth } from '@app/provider/authProvider.tsx';
 
 const routesForPublic = [
   {
     path: '/',
     element: <Layout />,
-    children: [
-      {
-        path: routeNames.root(),
-        element: <Home />,
-      },
-      {
-        path: routeNames.contact(),
-        element: <Contact />,
-      },
-    ],
+    children: [{ path: routeNames.contact(), element: <Contact /> }],
   },
 ];
 
@@ -40,14 +32,9 @@ const routesForNotAuthenticated = [
     path: '/',
     element: <Layout />,
     children: [
-      {
-        path: routeNames.login(),
-        element: <Login />,
-      },
-      {
-        path: routeNames.register(),
-        element: <Register />,
-      },
+      { path: routeNames.root(), element: <Home /> },
+      { path: routeNames.login(), element: <Login /> },
+      { path: routeNames.register(), element: <Register /> },
     ],
   },
 ];
@@ -55,52 +42,31 @@ const routesForNotAuthenticated = [
 const routesForAuthenticated = [
   {
     path: '/',
-    element: (
-      <ProtectedRoute>
-        <Layout />
-      </ProtectedRoute>
-    ),
+    element: <ProtectedRoute></ProtectedRoute>,
     children: [
-      {
-        path: routeNames.dashboard(),
-        element: <Dashboard />,
-      },
-      {
-        path: routeNames.people(),
-        element: <People />,
-      },
-      {
-        path: routeNames.buckets(),
-        element: <Buckets />,
-      },
-      {
-        path: routeNames.evaluation(),
-        element: <Evaluation />,
-      },
-      {
-        path: routeNames.teams(),
-        element: <Teams />,
-      },
-      {
-        path: routeNames.users(),
-        element: <Users />,
-      },
-      {
-        path: routeNames.roles(),
-        element: <Roles />,
-      },
+      { path: routeNames.dashboard(), element: <Dashboard /> },
+      { path: routeNames.people(), element: <People /> },
+      { path: routeNames.buckets(), element: <Buckets /> },
+      { path: routeNames.evaluation(), element: <Evaluation /> },
+      { path: routeNames.teams(), element: <Teams /> },
+      { path: routeNames.users(), element: <Users /> },
+      { path: routeNames.roles(), element: <Roles /> },
     ],
   },
 ];
 
 export default function Root() {
-  const { token } = useAuth();
+  const { isAuthenticated } = useAuth();
 
-  const router = createBrowserRouter([
-    ...routesForPublic,
-    ...(!token ? routesForNotAuthenticated : []),
-    ...routesForAuthenticated,
-  ]);
+  const router = useMemo(
+    () =>
+      createBrowserRouter([
+        ...(!isAuthenticated ? routesForNotAuthenticated : []),
+        ...routesForAuthenticated,
+        ...routesForPublic,
+      ]),
+    [isAuthenticated],
+  );
 
   return (
     <QueryClientProvider client={queryClient}>

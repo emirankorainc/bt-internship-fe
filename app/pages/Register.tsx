@@ -12,16 +12,43 @@ import { Input } from '@app/components/ui/input';
 import { useAuth } from '@app/provider/authProvider';
 import routeNames from '@app/routes/route-names';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
+interface FormDataType {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  phoneNumber: string;
+  dateOfBirth: Date;
+}
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
+const registerUser = async (formData: FormDataType) => {
+  const res = await fetch(apiUrl + '/api/auth/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+    credentials: 'include',
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || 'Register failed');
+  }
+
+  return res.json();
+};
+
 export const Register = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { setToken } = useAuth();
+  const { setIsAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const formSchema = z
@@ -41,7 +68,7 @@ export const Register = () => {
         required_error: 'Date of birth is required',
         invalid_type_error: 'Date of birth must be a valid date',
       }),
-      phoneNumber: z.string().regex(/^\+?[1-9]\d{6,14}$/, 'Please enter a valid phone number'),
+      phoneNumber: z.string().regex(/^\+?[0-9]\d{5,14}$/, 'Please enter a valid phone number'),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: "Passwords don't match",
@@ -61,40 +88,24 @@ export const Register = () => {
     },
   });
 
-  const onSubmit = async (formData: z.infer<typeof formSchema>) => {
-    console.log(JSON.stringify(formData));
-    setIsLoading(true);
-    try {
-      const res = await fetch(apiUrl + '/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error || 'Register failed');
-      }
-
-      const data = await res.json();
-      setToken(data.access_token);
-
+  const { mutate, isPending, error } = useMutation({
+    mutationFn: registerUser,
+    onSuccess: () => {
+      setIsAuthenticated(true);
       navigate(routeNames.dashboard());
-    } catch (error) {
-      throw new Error('An error occurred during register');
-    } finally {
-      setIsLoading(false);
-    }
+    },
+  });
+
+  const onSubmit = (formData: z.infer<typeof formSchema>) => {
+    mutate(formData);
   };
 
   return (
-    <div className="-mt-8 flex h-screen flex-col items-center justify-center bg-gray-100">
+    <section className="flex h-full flex-col items-center justify-center bg-gray-100 px-4 py-12">
       <h1 className="mb-8 text-4xl font-bold">Register</h1>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="flex flex-row gap-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <div className="flex flex-col items-start gap-4 min-lg:flex-row">
             <FormField
               control={form.control}
               name="firstName"
@@ -179,12 +190,12 @@ export const Register = () => {
               </FormItem>
             )}
           />
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-col items-start gap-4 min-lg:flex-row">
             <FormField
               control={form.control}
               name="phoneNumber"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
                     <Input
@@ -201,13 +212,13 @@ export const Register = () => {
               control={form.control}
               name="dateOfBirth"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel>Date of Birth</FormLabel>
                   <FormControl>
                     <DatePicker
                       date={field.value}
                       setDate={field.onChange}
-                      className="bg-secondary border-primary/50 w-52 border-1"
+                      className="bg-secondary border-primary/50 w-full border-1"
                     />
                   </FormControl>
                   <FormMessage />
@@ -215,19 +226,22 @@ export const Register = () => {
               )}
             />
           </div>
-          <div className="flex items-center justify-end gap-4">
+          {error && (
+            <FormMessage className="rounded-lg bg-red-200 px-2 py-2">{error.message}</FormMessage>
+          )}
+          <div className="flex items-center justify-end gap-4 pt-2 pl-2">
             <span>
-              Already have an account?
-              <Link to={routeNames.login()} className="pl-2 text-blue-600 hover:text-blue-800">
+              Already have an account?&nbsp;
+              <Link to={routeNames.login()} className="text-blue-600 hover:text-blue-800">
                 Login
               </Link>
             </span>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Loading...' : 'Register'}
+            <Button size="lg" type="submit" disabled={isPending}>
+              {isPending ? 'Loading...' : 'Register'}
             </Button>
           </div>
         </form>
       </Form>
-    </div>
+    </section>
   );
 };

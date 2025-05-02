@@ -5,12 +5,12 @@ import { Topbar } from './topbar/Topbar';
 import { Outlet } from 'react-router-dom';
 
 export const Layout = () => {
-  const { token } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   return (
     <SidebarProvider>
       <Topbar />
-      {token && <AppSidebar />}
+      {isAuthenticated && <AppSidebar />}
       <main className="flex-grow pt-14">
         <Outlet />
       </main>
