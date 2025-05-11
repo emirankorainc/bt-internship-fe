@@ -97,8 +97,7 @@ export function DatePicker({ date, setDate, className }: DatePickerProps) {
           onMonthChange={setCalendarDate}
           defaultMonth={date || new Date(currentYear - 18, 0, 1)}
           disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
-          initialFocus
-          className="flex justify-center"
+          className=""
         />
       </PopoverContent>
     </Popover>

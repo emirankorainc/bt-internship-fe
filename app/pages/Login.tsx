@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import logo from '@app/assets/logo/bloomteq_logo.png';
 import {
   Form,
@@ -14,37 +14,10 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import routeNames from '@app/routes/route-names';
-import { useMutation } from '@tanstack/react-query';
-import { useAuth } from '@app/provider/authProvider';
-
-interface FormDataType {
-  email: string;
-  password: string;
-}
-
-const apiUrl = import.meta.env.VITE_API_URL;
-
-const loginUser = async (formData: FormDataType) => {
-  const res = await fetch(apiUrl + '/api/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(formData),
-    credentials: 'include',
-  });
-
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.message || 'Login failed');
-  }
-
-  return res.json();
-};
+import { useLogin } from '@app/hooks/auth';
 
 export const Login = () => {
-  const { setIsAuthenticated } = useAuth();
-  const navigate = useNavigate();
+  const { mutate, isPending, error } = useLogin();
 
   const formSchema = z.object({
     email: z.string().email(),
@@ -56,14 +29,6 @@ export const Login = () => {
     defaultValues: {
       email: '',
       password: '',
-    },
-  });
-
-  const { mutate, isPending, error } = useMutation({
-    mutationFn: loginUser,
-    onSuccess: () => {
-      setIsAuthenticated(true);
-      navigate(routeNames.dashboard());
     },
   });
 

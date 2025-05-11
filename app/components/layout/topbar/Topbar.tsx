@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Bell, MessageCircleIcon } from 'lucide-react';
 import { TopbarButton } from './TopbarButton';
 import { UserMenu } from './UserMenu';
-import { useAuth } from '@app/provider/authProvider';
+import { useAuth } from '@app/context/AuthContext';
 import routeNames from '@app/routes/route-names';
 
 export const Topbar = () => {

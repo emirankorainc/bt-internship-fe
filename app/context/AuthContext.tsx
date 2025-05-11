@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
+import { useCheckAuth } from '@app/hooks/auth';
+import { createContext, ReactNode, useContext, useMemo } from 'react';
 
 interface User {
   id: string;
@@ -11,10 +12,9 @@ interface User {
 }
 
 interface AuthContextType {
+  isLoading: boolean;
   isAuthenticated: boolean;
-  setIsAuthenticated: (value: boolean) => void;
   user: User | null;
-  setUser: (value: User | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -24,18 +24,20 @@ interface AuthProviderProps {
 }
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
+  const { user, isLoading, isAuthenticated } = useCheckAuth();
 
   const contextValue = useMemo(
     () => ({
+      user: user ?? null,
+      isLoading,
       isAuthenticated,
-      setIsAuthenticated,
-      user,
-      setUser,
     }),
-    [isAuthenticated, user],
+    [user, isLoading, isAuthenticated],
   );
+
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };

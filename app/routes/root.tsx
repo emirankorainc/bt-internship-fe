@@ -16,8 +16,8 @@ import { Login } from '@app/pages/Login.tsx';
 import { ProtectedRoute } from './ProtectedRoute.tsx';
 import { Dashboard } from '@app/pages/Dashboard.tsx';
 import { Register } from '@app/pages/Register.tsx';
-import { useMemo } from 'react';
-import { useAuth } from '@app/provider/authProvider.tsx';
+import { UnauthenticatedRoute } from './UnauthenticatedRoute.tsx';
+import AuthProvider from '@app/context/AuthContext.tsx';
 
 const routesForPublic = [
   {
@@ -30,7 +30,7 @@ const routesForPublic = [
 const routesForNotAuthenticated = [
   {
     path: '/',
-    element: <Layout />,
+    element: <UnauthenticatedRoute />,
     children: [
       { path: routeNames.root(), element: <Home /> },
       { path: routeNames.login(), element: <Login /> },
@@ -42,7 +42,7 @@ const routesForNotAuthenticated = [
 const routesForAuthenticated = [
   {
     path: '/',
-    element: <ProtectedRoute></ProtectedRoute>,
+    element: <ProtectedRoute />,
     children: [
       { path: routeNames.dashboard(), element: <Dashboard /> },
       { path: routeNames.people(), element: <People /> },
@@ -55,22 +55,18 @@ const routesForAuthenticated = [
   },
 ];
 
+const router = createBrowserRouter([
+  ...routesForNotAuthenticated,
+  ...routesForAuthenticated,
+  ...routesForPublic,
+]);
+
 export default function Root() {
-  const { isAuthenticated } = useAuth();
-
-  const router = useMemo(
-    () =>
-      createBrowserRouter([
-        ...(!isAuthenticated ? routesForNotAuthenticated : []),
-        ...routesForAuthenticated,
-        ...routesForPublic,
-      ]),
-    [isAuthenticated],
-  );
-
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

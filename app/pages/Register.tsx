@@ -9,48 +9,15 @@ import {
   FormMessage,
 } from '@app/components/ui/form';
 import { Input } from '@app/components/ui/input';
-import { useAuth } from '@app/provider/authProvider';
+import { useRegister } from '@app/hooks/auth';
 import routeNames from '@app/routes/route-names';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
-interface FormDataType {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  phoneNumber: string;
-  dateOfBirth: Date;
-}
-
-const apiUrl = import.meta.env.VITE_API_URL;
-
-const registerUser = async (formData: FormDataType) => {
-  const res = await fetch(apiUrl + '/api/auth/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(formData),
-    credentials: 'include',
-  });
-
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.message || 'Register failed');
-  }
-
-  return res.json();
-};
-
 export const Register = () => {
-  const { setIsAuthenticated } = useAuth();
-  const navigate = useNavigate();
-
+  const { mutate, isPending, error } = useRegister();
   const formSchema = z
     .object({
       firstName: z.string().min(2, 'First name must be at least 2 characters'),
@@ -88,14 +55,6 @@ export const Register = () => {
     },
   });
 
-  const { mutate, isPending, error } = useMutation({
-    mutationFn: registerUser,
-    onSuccess: () => {
-      setIsAuthenticated(true);
-      navigate(routeNames.dashboard());
-    },
-  });
-
   const onSubmit = (formData: z.infer<typeof formSchema>) => {
     mutate(formData);
   };
@@ -110,7 +69,7 @@ export const Register = () => {
               control={form.control}
               name="firstName"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
                     <Input
@@ -127,7 +86,7 @@ export const Register = () => {
               control={form.control}
               name="lastName"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel>Last Name</FormLabel>
                   <FormControl>
                     <Input

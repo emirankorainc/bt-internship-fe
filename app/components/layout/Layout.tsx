@@ -1,4 +1,4 @@
-import { useAuth } from '@app/provider/authProvider';
+import { useAuth } from '@app/context/AuthContext';
 import { SidebarProvider } from '../ui/sidebar';
 import { AppSidebar } from './sidebar/AppSidebar';
 import { Topbar } from './topbar/Topbar';
