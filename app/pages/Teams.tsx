@@ -1,8 +1,110 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { MOCK_TEAMS } from '@app/constants/teams';
+import { ViewMode } from '@app/types/team';
+import {
+  useFilteredTeams,
+  TeamsControls,
+  TeamsGrid,
+  TeamsEmptyState,
+  TeamFormModal,
+  useTeamForm,
+} from '@app/features/team';
+import routeNames from '@app/routes/route-names';
+
 export const Teams = () => {
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+
+  const { filteredTeams } = useFilteredTeams(MOCK_TEAMS, searchQuery);
+  const { formState, openCreateForm, openEditForm, closeForm, handleSave, handleRemove } =
+    useTeamForm();
+
+  const handleViewTeam = (teamId: number) => {
+    navigate(routeNames.teamView({ teamId: teamId.toString() }));
+  };
+
+  const handleEditTeam = (teamId: number) => {
+    const team = MOCK_TEAMS.find((t) => t.id === teamId);
+    if (team) {
+      // Convert team data to form format
+      const formData = {
+        id: team.id,
+        name: `Team ${team.teamNumber}`,
+        technologies: [
+          { id: 'react', name: 'React', color: 'bg-blue-500' },
+          { id: 'nodejs', name: 'Node.js', color: 'bg-emerald-600' },
+        ],
+        client: 'Sample Client',
+        status: 'in-progress',
+        startDate: '2025-03-19',
+        endDate: '2025-06-19',
+        projectDescription:
+          'This is a comprehensive project that involves building a modern web application using cutting-edge technologies and best practices.',
+        projectName: 'Cloud Migration Project',
+        githubUrls: [
+          'https://github.com/company/cloud-migration',
+          'https://github.com/company/migration-scripts',
+        ],
+        jiraUrls: [
+          'https://company.atlassian.net/browse/CM',
+          'https://company.atlassian.net/browse/CM-DOCS',
+        ],
+        budget: 150000,
+        priority: 'high' as const,
+      };
+      openEditForm(formData);
+    }
+  };
+
   return (
-    <div className="flex h-screen flex-col items-center justify-center bg-gray-100">
-      <h1 className="mb-4 text-4xl font-bold">Welcome to the Team Page!</h1>
-      <p className="text-lg">This is a simple example of a React component.</p>
+    <div className="bg-background min-h-screen p-6">
+      <div className="mx-auto max-w-7xl">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-foreground mb-2 text-3xl font-bold">Teams</h1>
+          <p className="text-muted-foreground">Manage and view all teams in your organization</p>
+        </div>
+
+        {/* Search and Controls */}
+        <TeamsControls
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
+          onCreateTeam={openCreateForm}
+        />
+
+        {/* Results Count */}
+        <div className="mb-6">
+          <p className="text-muted-foreground text-sm">
+            Found {filteredTeams.length} team{filteredTeams.length !== 1 ? 's' : ''}
+          </p>
+        </div>
+
+        {/* Teams Grid or Empty State */}
+        {filteredTeams.length > 0 ? (
+          <TeamsGrid
+            teams={filteredTeams}
+            viewMode={viewMode}
+            onViewTeam={handleViewTeam}
+            onEditTeam={handleEditTeam}
+          />
+        ) : (
+          <TeamsEmptyState onCreateTeam={openCreateForm} />
+        )}
+
+        {/* Team Form Modal */}
+        <TeamFormModal
+          isOpen={formState.isOpen}
+          onClose={closeForm}
+          onSave={handleSave}
+          onRemove={handleRemove}
+          mode={formState.mode}
+          team={formState.team}
+        />
+      </div>
     </div>
   );
 };
