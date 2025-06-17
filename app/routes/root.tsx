@@ -7,7 +7,6 @@ import AuthProvider from '@app/context/AuthContext.tsx';
 import { UnauthenticatedRoute } from './UnauthenticatedRoute.tsx';
 import { ProtectedRoute } from './ProtectedRoute.tsx';
 import { Layout } from '@app/components/layout/Layout.tsx';
-import { BucketView } from '@app/pages/BucketView.tsx';
 import { Contact } from '@app/pages/Contact.tsx';
 import { Home } from '@app/pages/Home.tsx';
 import { Dashboard } from '@app/pages/Dashboard.tsx';
@@ -34,42 +33,7 @@ const routesForNotAuthenticated = [
     path: '/',
     element: <UnauthenticatedRoute />,
     children: [
-      {
-        path: routeNames.root(),
-        element: <Home />,
-      },
-      {
-        path: routeNames.people(),
-        element: <People />,
-      },
-      {
-        path: routeNames.buckets(),
-        element: <Buckets />,
-      },
-      {
-        path: routeNames.bucketDefinition(),
-        element: <BucketView />,
-      },
-      {
-        path: routeNames.evaluation(),
-        element: <Evaluation />,
-      },
-      {
-        path: routeNames.teams(),
-        element: <Teams />,
-      },
-      {
-        path: routeNames.users(),
-        element: <Users />,
-      },
-      {
-        path: routeNames.roles(),
-        element: <Roles />,
-      },
-      {
-        path: routeNames.contact(),
-        element: <Contact />,
-      },
+      { path: routeNames.root(), element: <Home /> },
       { path: routeNames.login(), element: <Login /> },
       { path: routeNames.register(), element: <Register /> },
       { path: routeNames.googleRegister(), element: <GoogleRegister /> },
