@@ -32,6 +32,9 @@ const routeNames = {
     generateRoute('/cto-ticket-test', params),
   employeeTicketTest: (params?: Record<string, string>): string =>
     generateRoute('/employee-ticket-test', params),
+  // Admin pages
+  promotionChecker: (params?: Record<string, string>): string =>
+    generateRoute('/admin/promotion-checker', params),
 };
 
 export default routeNames;

@@ -25,6 +25,8 @@ import { BucketView } from '@app/pages/BucketView.tsx';
 // Test pages - will be role-based later
 import { CtoTicketTest } from '@app/pages/cto-ticket-test.tsx';
 import { EmployeeTicketTest } from '@app/pages/employee-ticket-test.tsx';
+// Admin pages
+import { PromotionChecker } from '@app/pages/PromotionChecker.tsx';
 
 const routesForPublic = [
   {
@@ -65,6 +67,8 @@ const routesForAuthenticated = [
       // Test pages - will be role-based later
       { path: routeNames.ctoTicketTest(), element: <CtoTicketTest /> },
       { path: routeNames.employeeTicketTest(), element: <EmployeeTicketTest /> },
+      // Admin pages
+      { path: routeNames.promotionChecker(), element: <PromotionChecker /> },
     ],
   },
 ];

@@ -7,6 +7,7 @@ import {
   MessageSquareText,
   ShieldUser,
   Ticket,
+  TrendingUp,
   UserRound,
   UserRoundSearch,
 } from 'lucide-react';
@@ -40,6 +41,8 @@ const items = [
   // Test pages - will be role-based later
   { title: 'CTO Tickets', url: routeNames.ctoTicketTest(), icon: <Ticket /> },
   { title: 'Employee Chat', url: routeNames.employeeTicketTest(), icon: <MessageSquareText /> },
+  // Admin pages
+  { title: 'Promotion Checker', url: routeNames.promotionChecker(), icon: <TrendingUp /> },
 ];
 
 export const AppSidebar = () => {
