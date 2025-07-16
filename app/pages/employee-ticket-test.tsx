@@ -179,7 +179,7 @@ export const EmployeeTicketTest = () => {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="flex h-full w-full items-center justify-center p-4 sm:p-6 lg:p-8">
         <div className="text-center">
           <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-blue-500"></div>
           <p className="mt-4 text-gray-600">Loading your tickets...</p>
@@ -189,13 +189,13 @@ export const EmployeeTicketTest = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="mx-auto max-w-7xl p-6">
-        <div className="mb-8">
-          <h1 className="mb-2 text-3xl font-bold text-gray-900">My Assigned Tickets</h1>
+    <div className="h-full w-full p-4 sm:p-6 lg:p-8">
+      <div className="mx-auto h-full w-full max-w-7xl pb-6 sm:pb-8">
+        <div className="mb-6 sm:mb-8 mt-4 sm:mt-6">
+          <h1 className="mb-2 text-2xl font-bold text-gray-900 sm:text-3xl">My Assigned Tickets</h1>
           <p className="text-gray-600">Manage and track your assigned work tickets</p>
 
-          <div className="mt-6 flex gap-4">
+          <div className="mt-4 sm:mt-6 flex gap-4">
             <div className="flex-1">
               <div className="relative">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -238,19 +238,19 @@ export const EmployeeTicketTest = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2">
           {/* Tickets List */}
           <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
-            <div className="border-b border-gray-100 p-6">
+            <div className="border-b border-gray-100 p-4 sm:p-6">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-gray-900">Your Tickets</h2>
+                <h2 className="text-lg font-semibold text-gray-900 sm:text-xl">Your Tickets</h2>
                 <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
                   {filteredTickets.length} tickets
                 </span>
               </div>
             </div>
 
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               {filteredTickets.length === 0 ? (
                 <div className="py-12 text-center">
                   <div className="mx-auto mb-4 h-12 w-12 text-gray-400">

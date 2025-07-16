@@ -105,34 +105,19 @@ export const Dashboard = () => {
   } satisfies ChartConfig;
 
   return (
-    <div className="h-full bg-gray-100 px-6 py-8">
-      <div className="mx-12 mb-8 w-full">
-        <h1 className="text-foreground text-3xl font-bold">Dashboard</h1>
-      </div>
-      <div className="container mx-auto h-full space-y-6">
-        <div className="grid h-full grid-cols-1 gap-6 lg:grid-cols-2">
+    <div className="h-full w-full p-4 sm:p-6 lg:p-8">
+      <div className="mx-auto h-full w-full max-w-7xl space-y-6 pb-6 sm:pb-8">
+        <div className="mb-6 mt-4 sm:mt-6">
+          <h1 className="text-foreground text-2xl font-bold sm:text-3xl">Dashboard</h1>
+        </div>
+        
+        <div className="grid h-full grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2">
           {/* First Column */}
-          <div className="flex h-full flex-col space-y-6">
-            {/* Active Users Card */}
-            {/* <Card className="h-1/6 flex-shrink-0"> */}
-            {/*   <CardHeader className="pb-2"> */}
-            {/*     <CardTitle className="text-lg">Active Users</CardTitle> */}
-            {/*   </CardHeader> */}
-            {/*   <CardContent> */}
-            {/*     <div className="flex h-full items-center justify-center"> */}
-            {/*       <div className="text-center"> */}
-            {/*         <div className="text-primary text-3xl font-bold"> */}
-            {/*           {dashboardData ? dashboardData.activeUsers : '...'} */}
-            {/*         </div> */}
-            {/*       </div> */}
-            {/*     </div> */}
-            {/*   </CardContent> */}
-            {/* </Card> */}
-
+          <div className="flex h-full flex-col space-y-4 sm:space-y-6">
             {/* User Registrations per Quarter Chart */}
-            <Card className="h-3/6 flex-shrink-0">
+            <Card className="flex-1">
               <CardHeader className="pb-2">
-                <CardTitle className="text-xl">User Registrations per Quarter</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">User Registrations per Quarter</CardTitle>
               </CardHeader>
               <CardContent className="h-full pb-6">
                 {dashboardData ? (
@@ -175,9 +160,9 @@ export const Dashboard = () => {
             </Card>
 
             {/* User Status Distribution */}
-            <Card className="h-2/6 flex-shrink-0">
+            <Card className="flex-1">
               <CardHeader className="pb-2">
-                <CardTitle className="text-xl">User Status Distribution</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">User Status Distribution</CardTitle>
               </CardHeader>
               <CardContent className="hide-scrollbar h-full max-h-full overflow-y-auto">
                 <div className="space-y-3">
@@ -207,11 +192,11 @@ export const Dashboard = () => {
           </div>
 
           {/* Second Column */}
-          <div className="flex h-full flex-col space-y-6">
+          <div className="flex h-full flex-col space-y-4 sm:space-y-6">
             {/* Team Performance */}
-            <Card className="h-2/6 flex-shrink-0">
+            <Card className="flex-1">
               <CardHeader className="pb-2">
-                <CardTitle className="text-xl">Team Performance</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">Team Performance</CardTitle>
               </CardHeader>
               <CardContent className="hide-scrollbar h-full max-h-full overflow-y-auto">
                 <div className="space-y-4">
@@ -237,9 +222,9 @@ export const Dashboard = () => {
             </Card>
 
             {/* Recent Reports */}
-            <Card className="h-1.5/6 flex-shrink-0">
+            <Card className="flex-1">
               <CardHeader className="pb-2">
-                <CardTitle className="text-xl">Recent Reports</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">Recent Reports</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="max-h-full space-y-2 overflow-y-auto">
@@ -250,7 +235,7 @@ export const Dashboard = () => {
                         <Badge variant="default">{dashboardData.reportCount}</Badge>
                       </div>
                       <div className="bg-muted/50 flex items-center justify-between rounded-lg p-2">
-                        <span className="font-medium">Recent (30 days)</span>
+                        <span className="font-medium">Reports (Last 30 Days)</span>
                         <Badge variant="outline" className="border-primary/30 bg-card">
                           {dashboardData.recentReports}
                         </Badge>

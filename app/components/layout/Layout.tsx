@@ -9,13 +9,17 @@ export const Layout = () => {
 
   return (
     <SidebarProvider>
-      <Topbar />
+      <div className="flex h-screen w-full flex-col">
+        <Topbar />
 
-      {isAuthenticated && <AppSidebar />}
+        <div className="flex flex-1 overflow-hidden pt-16">
+          {isAuthenticated && <AppSidebar />}
 
-      <main className="flex-grow pt-14">
-        <Outlet />
-      </main>
+          <main className="flex-1 overflow-auto bg-gray-100">
+            <Outlet />
+          </main>
+        </div>
+      </div>
     </SidebarProvider>
   );
 };

@@ -187,7 +187,7 @@ export const CtoTicketTest = () => {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="flex h-full w-full items-center justify-center p-4 sm:p-6 lg:p-8">
         <div className="text-center">
           <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-blue-500"></div>
           <p className="mt-4 text-gray-600">Loading tickets...</p>
@@ -197,13 +197,13 @@ export const CtoTicketTest = () => {
   }
 
   return (
-    <div className="h-full bg-gray-100">
-      <div className="mx-auto max-w-7xl p-6">
-        <div className="mb-8">
-          <h1 className="mb-2 text-3xl font-bold text-gray-900">Ticket Management</h1>
+    <div className="h-full w-full p-4 sm:p-6 lg:p-8">
+      <div className="mx-auto h-full w-full max-w-7xl pb-6 sm:pb-8">
+        <div className="mb-6 sm:mb-8 mt-4 sm:mt-6">
+          <h1 className="mb-2 text-2xl font-bold text-gray-900 sm:text-3xl">Ticket Management</h1>
           <p className="text-gray-600">Create, assign, and manage team tickets</p>
 
-          <div className="mt-6">
+          <div className="mt-4 sm:mt-6">
             <Button
               variant={showCreateForm ? 'outline' : 'default'}
               size="lg"
@@ -224,14 +224,14 @@ export const CtoTicketTest = () => {
         </div>
 
         {showCreateForm && (
-          <div className="mb-8 rounded-xl border border-gray-200 bg-white shadow-sm">
-            <div className="border-b border-gray-100 p-6">
-              <h2 className="text-xl font-semibold text-gray-900">Create New Ticket</h2>
+          <div className="mb-6 sm:mb-8 rounded-xl border border-gray-200 bg-white shadow-sm">
+            <div className="border-b border-gray-100 p-4 sm:p-6">
+              <h2 className="text-lg font-semibold text-gray-900 sm:text-xl">Create New Ticket</h2>
               <p className="mt-1 text-sm text-gray-600">Assign a new task to a team member</p>
             </div>
 
-            <form onSubmit={handleCreateTicket} className="p-6">
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <form onSubmit={handleCreateTicket} className="p-4 sm:p-6">
+              <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2">
                 <div className="sm:col-span-2">
                   <label className="mb-2 block text-sm font-medium text-gray-700">
                     Ticket Title

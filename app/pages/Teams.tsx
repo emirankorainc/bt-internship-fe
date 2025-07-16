@@ -25,11 +25,11 @@ export const Teams = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="mx-auto mt-4 max-w-7xl">
+    <div className="h-full w-full p-4 sm:p-6 lg:p-8">
+      <div className="mx-auto h-full w-full max-w-7xl pb-6 sm:pb-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-foreground mb-2 text-3xl font-bold">Teams</h1>
+        <div className="mb-6 sm:mb-8 mt-4 sm:mt-6">
+          <h1 className="text-foreground mb-2 text-2xl font-bold sm:text-3xl">Teams</h1>
           <p className="text-muted-foreground">Manage and view all teams in your organization</p>
         </div>
 
@@ -43,7 +43,7 @@ export const Teams = () => {
         />
 
         {/* Results Count */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <p className="text-muted-foreground text-sm">
             Found {filteredTeams?.length} team{filteredTeams?.length !== 1 ? 's' : ''}
           </p>
