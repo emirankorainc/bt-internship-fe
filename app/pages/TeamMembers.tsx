@@ -45,8 +45,8 @@ export const TeamMembers = () => {
   // Loading state
   if (isLoading) {
     return (
-      <div className="h-full bg-gray-100 p-6 pt-16">
-        <div className="mx-auto max-w-7xl">
+      <div className="h-full w-full p-4 sm:p-6 lg:p-8">
+        <div className="mx-auto h-full w-full max-w-7xl">
           <div className="flex min-h-[400px] items-center justify-center">
             <div className="flex flex-col items-center gap-4">
               <Spinner size="large" />
@@ -59,10 +59,10 @@ export const TeamMembers = () => {
   }
 
   return (
-    <SidebarInset className="h-full bg-gray-100">
+    <SidebarInset className="h-full">
       {/* Header */}
       <div className="border-border bg-card sticky top-16 z-10 w-full border-b">
-        <div className="w-full px-4 py-4 sm:px-6">
+        <div className="w-full px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Button
@@ -106,7 +106,7 @@ export const TeamMembers = () => {
               </div>
 
               <div>
-                <h1 className="text-foreground text-2xl font-bold">{team?.name}</h1>
+                <h1 className="text-foreground text-xl font-bold sm:text-2xl">{team?.name}</h1>
                 <p className="text-muted-foreground">Manage members</p>
               </div>
             </div>
@@ -125,7 +125,7 @@ export const TeamMembers = () => {
       </div>
 
       {/* Content */}
-      <div className="w-full px-4 py-6 sm:px-6">
+      <div className="w-full px-4 py-6 sm:px-6 lg:px-8">
         {/* Controls */}
         <MemberManagementControls
           searchQuery={searchTerm}

@@ -24,8 +24,8 @@ export const BucketHeader = ({
   const ability = useAbility(AbilityContext);
 
   return (
-    <div className="bg-card border-b shadow-sm">
-      <div className="flex items-center justify-between p-6">
+    <div className="bg-card border-b shadow-sm mb-6 sm:mb-8">
+      <div className="flex items-center justify-between p-4 sm:p-6">
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" onClick={onNavigateBack} className="hover:bg-accent">
             <ArrowLeft className="h-5 w-5" />
@@ -43,14 +43,14 @@ export const BucketHeader = ({
       </div>
 
       {title && (
-        <div className="px-6 pb-6">
+        <div className="px-4 pb-4 sm:px-6 sm:pb-6">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-primary/10 rounded-lg p-2">
                 <Award className="text-primary h-6 w-6" />
               </div>
               <div>
-                <h1 className="text-foreground text-3xl font-bold">{title}</h1>
+                <h1 className="text-foreground text-2xl font-bold sm:text-3xl">{title}</h1>
                 <p className="text-muted-foreground mt-1">{description}</p>
               </div>
             </div>

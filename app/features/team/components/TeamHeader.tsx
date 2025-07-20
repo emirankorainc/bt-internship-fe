@@ -30,12 +30,12 @@ export const TeamHeader = ({ team, onManageMembers, onEdit }: TeamHeaderProps) =
   const status = team.status.replace('_', ' ');
 
   return (
-    <Card className="mb-8">
-      <CardContent className="px-6 py-5">
+    <Card className="mb-6 sm:mb-8">
+      <CardContent className="px-4 py-4 sm:px-6 sm:py-5">
         <div className="flex h-full flex-col lg:flex-row">
           {/* Team Info Section */}
           <div className="flex-1">
-            <div className="mb-6 flex w-full flex-col items-center gap-6">
+            <div className="mb-4 sm:mb-6 flex w-full flex-col items-center gap-4 sm:gap-6">
               {/* Team Avatar Circles */}
               <div className="relative">
                 <div className="flex items-center justify-center">
@@ -79,7 +79,7 @@ export const TeamHeader = ({ team, onManageMembers, onEdit }: TeamHeaderProps) =
 
               {/* Team Title and Stats */}
               <div className="flex-1">
-                <h1 className="text-foreground mb-2 text-center text-3xl font-bold">{team.name}</h1>
+                <h1 className="text-foreground mb-2 text-center text-2xl font-bold sm:text-3xl">{team.name}</h1>
                 <div className="text-muted-foreground mb-3 flex items-center justify-center gap-4 text-sm">
                   <div className="flex items-center gap-1">
                     <Users className="h-4 w-4" />

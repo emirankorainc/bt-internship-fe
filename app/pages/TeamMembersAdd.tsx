@@ -79,10 +79,10 @@ export const TeamMembersAdd = () => {
   };
 
   return (
-    <div className="h-full bg-gray-100">
+    <div className="h-full w-full">
       {/* Header */}
       <div className="border-border bg-card sticky top-16 z-10 w-full border-b">
-        <div className="w-full px-4 py-4 sm:px-6">
+        <div className="w-full px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Button
@@ -125,7 +125,7 @@ export const TeamMembersAdd = () => {
                 )}
               </div>
               <div>
-                <h1 className="text-foreground text-2xl font-bold">{team?.name}</h1>
+                <h1 className="text-foreground text-xl font-bold sm:text-2xl">{team?.name}</h1>
                 <p className="text-muted-foreground">Add members</p>
               </div>
             </div>
@@ -147,17 +147,7 @@ export const TeamMembersAdd = () => {
         </div>
       </div>
 
-      {/* Validation Alert */}
-      {showValidationError && validationError && (
-        <div className="fixed top-20 left-1/2 z-50 w-full max-w-2xl -translate-x-1/2 transform px-4">
-          <Alert className="animate-in slide-in-from-top-2 border-yellow-200 bg-yellow-50 shadow-lg duration-300">
-            <AlertTriangle className="h-4 w-4 text-yellow-600" />
-            <AlertDescription className="text-yellow-800">{validationError}</AlertDescription>
-          </Alert>
-        </div>
-      )}
-
-      <div className="w-full px-4 py-6 sm:px-6">
+      <div className="w-full px-4 py-6 sm:px-6 lg:px-8">
         <div className="space-y-4">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             {/* Search bar */}
@@ -193,7 +183,7 @@ export const TeamMembersAdd = () => {
 
         {/* Selected new members */}
         <div className="my-6">
-          <h1 className="text-xl">Selected Users</h1>
+          <h1 className="text-lg sm:text-xl">Selected Users</h1>
           <p className="text-muted-foreground text-sm">{selectedMembers.length} new members</p>
         </div>
 
@@ -201,7 +191,7 @@ export const TeamMembersAdd = () => {
           {/* No Members State */}
           {selectedMembers.length === 0 && (
             <div className="flex h-full items-center justify-center">
-              <p className="text-muted-foreground text-center text-2xl">No selected member</p>
+              <p className="text-muted-foreground text-center text-xl sm:text-2xl">No selected member</p>
             </div>
           )}
 
@@ -239,7 +229,7 @@ export const TeamMembersAdd = () => {
 
         {/* Available Users */}
         <div className="border-primary/20 mx-2 my-6 border-t-1 pt-6">
-          <h1 className="text-xl">Available Users</h1>
+          <h1 className="text-lg sm:text-xl">Available Users</h1>
           <p className="text-muted-foreground text-sm">
             {availableUsers && selectedMembers
               ? availableUsers?.length - selectedMembers?.length

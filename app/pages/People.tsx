@@ -28,9 +28,9 @@ export const People = () => {
 
   if (error) {
     return (
-      <div className="flex h-full w-full flex-col items-center justify-center bg-gray-100">
-        <h1 className="mb-4 text-4xl font-bold text-red-600">Error Loading Users</h1>
-        <p className="text-muted-foreground text-lg">
+      <div className="flex h-full w-full flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
+        <h1 className="mb-4 text-2xl font-bold text-red-600 sm:text-4xl">Error Loading Users</h1>
+        <p className="text-muted-foreground text-base sm:text-lg">
           Failed to load user data. Please try again later.
         </p>
       </div>
@@ -38,87 +38,89 @@ export const People = () => {
   }
 
   return (
-    <div className="flex h-full w-full flex-col items-center bg-gray-100 px-24 pt-12">
-      <div className="mb-8 w-full">
-        <h1 className="text-foreground mb-2 text-3xl font-bold">People</h1>
-        <p className="text-muted-foreground">Discover people</p>
-      </div>
-
-      <div className="mb-8 flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        {/* Search Bar */}
-        <div className="relative w-full flex-1">
-          <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-          <Input
-            placeholder="Search People..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="bg-card h-9 pl-10"
-          />
+    <div className="h-full w-full p-4 sm:p-6 lg:p-8">
+      <div className="mx-auto h-full w-full max-w-7xl pb-6 sm:pb-8">
+        <div className="mb-6 sm:mb-8 mt-4 sm:mt-6">
+          <h1 className="text-foreground mb-2 text-2xl font-bold sm:text-3xl">People</h1>
+          <p className="text-muted-foreground">Discover people</p>
         </div>
 
-        <div className="ml-auto flex items-center justify-end gap-2">
-          <div className="flex rounded-lg border-1">
-            <Button
-              size="icon"
-              onClick={handleSetListMode}
-              className={`rounded-r-none ${viewMode === 'list' ? toggleButtonActive : toggleButtonInactive}`}
-            >
-              <List className="h-4 w-4" />
-            </Button>
+        <div className="mb-6 sm:mb-8 flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          {/* Search Bar */}
+          <div className="relative w-full flex-1">
+            <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+            <Input
+              placeholder="Search People..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="bg-card h-9 pl-10"
+            />
+          </div>
 
-            <Button
-              size="icon"
-              onClick={handleSetGridMode}
-              className={`rounded-l-none ${viewMode === 'grid' ? toggleButtonActive : toggleButtonInactive}`}
-            >
-              <LayoutGrid className="h-4 w-4" />
-            </Button>
+          <div className="ml-auto flex items-center justify-end gap-2">
+            <div className="flex rounded-lg border-1">
+              <Button
+                size="icon"
+                onClick={handleSetListMode}
+                className={`rounded-r-none ${viewMode === 'list' ? toggleButtonActive : toggleButtonInactive}`}
+              >
+                <List className="h-4 w-4" />
+              </Button>
+
+              <Button
+                size="icon"
+                onClick={handleSetGridMode}
+                className={`rounded-l-none ${viewMode === 'grid' ? toggleButtonActive : toggleButtonInactive}`}
+              >
+                <LayoutGrid className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="mt-6 w-full">
-        {isLoading && (
-          <div className="col-span-4 flex justify-center">
-            <p className="text-muted-foreground text-lg">Loading users...</p>
-          </div>
-        )}
+        <div className="mt-6 w-full">
+          {isLoading && (
+            <div className="col-span-4 flex justify-center">
+              <p className="text-muted-foreground text-base sm:text-lg">Loading users...</p>
+            </div>
+          )}
 
-        {!isLoading && filteredPeople.length === 0 && searchQuery && (
-          <div className="col-span-4 flex justify-center">
-            <p className="text-muted-foreground text-lg">No users found matching "{searchQuery}"</p>
-          </div>
-        )}
+          {!isLoading && filteredPeople.length === 0 && searchQuery && (
+            <div className="col-span-4 flex justify-center">
+              <p className="text-muted-foreground text-base sm:text-lg">No users found matching "{searchQuery}"</p>
+            </div>
+          )}
 
-        {!isLoading && filteredPeople.length === 0 && !searchQuery && (
-          <div className="col-span-4 flex justify-center">
-            <p className="text-muted-foreground text-lg">No users found</p>
-          </div>
-        )}
+          {!isLoading && filteredPeople.length === 0 && !searchQuery && (
+            <div className="col-span-4 flex justify-center">
+              <p className="text-muted-foreground text-base sm:text-lg">No users found</p>
+            </div>
+          )}
 
-        {viewMode === 'list' ? (
-          <div className="w-full space-y-3">
-            {filteredPeople.map((user) => (
-              <PeopleCard
-                key={user.id}
-                user={user}
-                isActive={user.status.toLowerCase() === 'active'}
-                viewMode="list"
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-            {filteredPeople.map((user) => (
-              <PeopleCard
-                key={user.id}
-                user={user}
-                isActive={user.status.toLowerCase() === 'active'}
-                viewMode="grid"
-              />
-            ))}
-          </div>
-        )}
+          {viewMode === 'list' ? (
+            <div className="w-full space-y-3">
+              {filteredPeople.map((user) => (
+                <PeopleCard
+                  key={user.id}
+                  user={user}
+                  isActive={user.status.toLowerCase() === 'active'}
+                  viewMode="list"
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+              {filteredPeople.map((user) => (
+                <PeopleCard
+                  key={user.id}
+                  user={user}
+                  isActive={user.status.toLowerCase() === 'active'}
+                  viewMode="grid"
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
