@@ -21,9 +21,17 @@ export const ENDPOINTS = {
       uri: '/user/current-user',
       method: 'GET',
     },
+    getById: (userId: string) => ({
+      uri: `/user/${userId}`,
+      method: 'GET',
+    }),
     allUsers: {
       uri: '/user/all',
       method: 'GET',
+    },
+    updateProfile: {
+      uri: '/user/profile',
+      method: 'PUT',
     },
     activate: (userId: string) => ({
       uri: `user/${userId}/activate`,
@@ -114,6 +122,10 @@ export const ENDPOINTS = {
     delete: (reportId: string) => ({
       uri: `/report/delete/${reportId}`,
       method: 'DELETE',
+    }),
+    getById: (reportId: string) => ({
+      uri: `/report/${reportId}`,
+      method: 'GET',
     }),
     getByUserId: (userId: string) => ({
       uri: `/report/${userId}`,
@@ -215,6 +227,29 @@ export const ENDPOINTS = {
     markFinished: (ticketId: string) => ({
       uri: `/tickets/${ticketId}/mark-finished`,
       method: 'PUT',
+    }),
+  },
+
+  role: {
+    getAllRoles: {
+      uri: '/roles',
+      method: 'GET',
+    },
+    getAllPermissions: {
+      uri: '/roles/permissions',
+      method: 'GET',
+    },
+    createRole: {
+      uri: '/roles',
+      method: 'POST',
+    },
+    updateRole: (roleId: string) => ({
+      uri: `/roles/${roleId}`,
+      method: 'PUT',
+    }),
+    deleteRole: (roleId: string) => ({
+      uri: `/roles/${roleId}`,
+      method: 'DELETE',
     }),
   },
 };

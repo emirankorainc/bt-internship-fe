@@ -3,13 +3,16 @@ import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { UserType } from '@app/types/types';
 import { useGetAllUsers } from '@app/hooks/user/useGetAllUsers';
 import { useGetUserBucketsById } from '@app/hooks/bucket';
 import { UserBucketLevel } from '@app/types/bucket';
 import { Mail, Phone, Calendar, User, Shield, Target, ArrowLeft } from 'lucide-react';
 import { Spinner } from '@app/components/ui/spinner';
 import routeNames from '@app/routes/route-names';
+import { UserReportsSection } from '@app/features/users/components/UserReportsSection';
+import { UserReportModal } from '@app/features/users/components/modal/UserReportModal';
+import { useState } from 'react';
+import { User as UserType } from '@app/types/types';
 
 export const UserDetail = () => {
   const { userId } = useParams<{ userId: string }>();
@@ -22,6 +25,9 @@ export const UserDetail = () => {
   // Get user buckets
   const { buckets: userBuckets, isLoading: bucketsLoading } = useGetUserBucketsById(userId || '');
 
+  // Report modal state
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+
   // Generate initials for avatar fallback
   const getInitials = (firstName: string, lastName: string) => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
@@ -31,18 +37,12 @@ export const UserDetail = () => {
     navigate(routeNames.people());
   };
 
-  // Get status color
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'active':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'inactive':
-        return 'bg-red-100 text-red-800 border-red-200';
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
+  const handleAddReport = () => {
+    setIsReportModalOpen(true);
+  };
+
+  const handleCloseReportModal = () => {
+    setIsReportModalOpen(false);
   };
 
   // Format date
@@ -244,6 +244,9 @@ export const UserDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Report Modal */}
+      <UserReportModal isOpen={isReportModalOpen} onClose={handleCloseReportModal} user={user} />
     </div>
   );
 };

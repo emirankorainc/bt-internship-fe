@@ -7,8 +7,12 @@ import { Spinner } from '@app/components/ui/spinner';
 import { useTeamForm } from '@app/features/team/hooks';
 import { TeamHeader } from '@app/features/team/components/TeamHeader';
 import { MembersGrid } from '@app/features/team/components/MembersGrid';
+import { ReportsSection } from '@app/features/team/components/ReportsSection';
 import { TeamFormModal } from '@app/features/team/components/modal/TeamFormModal';
 import { PositionChangeModal } from '@app/features/team/components/modal/PositionChangeModal';
+import { ReportModal } from '@app/features/team/components/modal/ReportModal';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@app/components/ui/tabs';
+import { Users, FileText } from 'lucide-react';
 
 export const TeamView = () => {
   // In a real app, you'd fetch team data based on the ID from params
@@ -20,6 +24,13 @@ export const TeamView = () => {
   // Position change modal state
   const [isPositionChangeOpen, setIsPositionChangeOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+
+  // Report modal state
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [selectedMemberForReport, setSelectedMemberForReport] = useState<TeamMember | null>(null);
+
+  // Active tab state
+  const [activeTab, setActiveTab] = useState('members');
 
   const { formState, openEditForm, closeForm } = useTeamForm();
 
@@ -33,8 +44,13 @@ export const TeamView = () => {
   };
 
   const handleSubmitReport = (memberId: string) => {
-    console.log('Submit report for member:', memberId);
-    // TODO: Open submit report modal or navigate to report page
+    if (!team) return;
+    const member = team.members?.find((member) => member.id === memberId);
+
+    if (member) {
+      setSelectedMemberForReport(member);
+      setIsReportModalOpen(true);
+    }
   };
 
   const handleChangePosition = (memberId: string) => {
@@ -65,6 +81,11 @@ export const TeamView = () => {
   const closePositionChangeModal = () => {
     setIsPositionChangeOpen(false);
     setSelectedMember(null);
+  };
+
+  const closeReportModal = () => {
+    setIsReportModalOpen(false);
+    setSelectedMemberForReport(null);
   };
 
   // Loading state
@@ -127,12 +148,17 @@ export const TeamView = () => {
             <p className="text-muted-foreground">Manage and view details of all team members</p>
           </div>
 
-          <MembersGrid
-            members={team.members || []}
-            onSubmitReport={handleSubmitReport}
-            onChangePosition={handleChangePosition}
-          />
-        </div>
+            <MembersGrid
+              members={team.members || []}
+              onSubmitReport={handleSubmitReport}
+              onChangePosition={handleChangePosition}
+            />
+          </TabsContent>
+
+          <TabsContent value="reports" className="space-y-6">
+            <ReportsSection members={team.members || []} />
+          </TabsContent>
+        </Tabs>
 
         {/* Team Form Modal */}
         <TeamFormModal
@@ -148,6 +174,13 @@ export const TeamView = () => {
           onClose={closePositionChangeModal}
           member={selectedMember}
           onConfirm={handlePositionChangeConfirm}
+        />
+
+        {/* Report Modal */}
+        <ReportModal
+          isOpen={isReportModalOpen}
+          onClose={closeReportModal}
+          member={selectedMemberForReport}
         />
       </div>
     </div>

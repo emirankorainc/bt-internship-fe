@@ -1,20 +1,24 @@
 import { Button } from '@app/components/ui/button';
 import { Input } from '@app/components/ui/input';
+import { Alert, AlertDescription } from '@app/components/ui/alert';
 import { AvailableUserCard } from '@app/features/team/components/card/AvailableUserCard';
 import { SelectedMemberCard } from '@app/features/team/components/card/SelectedMemberCard';
 import { useAddMembersPage } from '@app/features/team/hooks/useAddMembersPage';
 import { useGetTeamById } from '@app/hooks/team';
 import { useGetAvailableUsers } from '@app/hooks/team/useGetAvailableUsers';
 import { AddMemberFormValues } from '@app/schemas';
-import { UserType } from '@app/types/types';
-import { ArrowLeft, Check, LayoutGrid, List, Search } from 'lucide-react';
+import { User } from '@app/types/types';
+import { ArrowLeft, Check, LayoutGrid, List, Search, AlertTriangle } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
 
 export const TeamMembersAdd = () => {
   const { teamId } = useParams<{ teamId: string }>();
   const { team } = useGetTeamById(teamId || '');
   const { availableUsers, isLoading } = useGetAvailableUsers(teamId || '');
   const navigate = useNavigate();
+  const [validationError, setValidationError] = useState<string | null>(null);
+  const [showValidationError, setShowValidationError] = useState(false);
 
   const handleBackToTeam = () => {
     navigate(`/teams/${teamId}/members`);
@@ -33,6 +37,46 @@ export const TeamMembersAdd = () => {
     viewMode,
     errorAddingMembers,
   } = useAddMembersPage(availableUsers ?? [], teamId ?? '');
+
+  const handleSaveMembers = () => {
+    // Check if any member doesn't have a position assigned
+    const membersWithoutPosition = selectedMembers.filter((member) => !member.position.trim());
+
+    if (membersWithoutPosition.length > 0) {
+      const memberNames = membersWithoutPosition
+        .map((member) => {
+          const user = availableUsers?.find((user) => user.id === member.userId);
+          return user ? `${user.firstName} ${user.lastName}` : 'Unknown User';
+        })
+        .join(', ');
+
+      setValidationError(`Please assign positions to the following members: ${memberNames}`);
+      setShowValidationError(true);
+      return;
+    }
+
+    // Clear validation errors if validation passes
+    setValidationError(null);
+    setShowValidationError(false);
+
+    // If validation passes, proceed with adding members
+    handleAddMembers();
+  };
+
+  const handlePositionChange = (userId: string, position: string) => {
+    handleChangePosition(userId, position);
+
+    // Clear validation error if all members now have positions
+    const updatedMembers = selectedMembers.map((member) =>
+      member.userId === userId ? { ...member, position } : member,
+    );
+    const membersWithoutPosition = updatedMembers.filter((member) => !member.position.trim());
+
+    if (membersWithoutPosition.length === 0) {
+      setValidationError(null);
+      setShowValidationError(false);
+    }
+  };
 
   return (
     <div className="h-full w-full">
@@ -92,7 +136,7 @@ export const TeamMembersAdd = () => {
               {/* Save Button */}
               <Button
                 size="lg"
-                onClick={handleAddMembers}
+                onClick={handleSaveMembers}
                 className="border-yellow-600 bg-yellow-400 text-black hover:border-yellow-700 hover:bg-yellow-500"
               >
                 <Check className="mr-2 h-4 w-4" />
@@ -158,10 +202,11 @@ export const TeamMembersAdd = () => {
                 {selectedMembers.map((newMember: AddMemberFormValues) => (
                   <SelectedMemberCard
                     member={newMember}
-                    changePosition={handleChangePosition}
+                    changePosition={handlePositionChange}
                     deselectMember={handleDeselectMember}
                     viewMode={viewMode}
                     user={availableUsers?.find((user) => user.id === newMember.userId)}
+                    showValidationError={showValidationError}
                   />
                 ))}
               </div>
@@ -170,10 +215,11 @@ export const TeamMembersAdd = () => {
                 {selectedMembers.map((newMember: AddMemberFormValues) => (
                   <SelectedMemberCard
                     member={newMember}
-                    changePosition={handleChangePosition}
+                    changePosition={handlePositionChange}
                     deselectMember={handleDeselectMember}
                     viewMode={viewMode}
                     user={availableUsers?.find((user) => user.id === newMember.userId)}
+                    showValidationError={showValidationError}
                   />
                 ))}
               </div>
@@ -214,7 +260,7 @@ export const TeamMembersAdd = () => {
           <div className="w-full">
             {viewMode === 'grid' ? (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-                {filteredUsers.map((user: UserType) => (
+                {filteredUsers.map((user: User) => (
                   <AvailableUserCard
                     user={user}
                     selectMember={handleSelectMember}
@@ -224,7 +270,7 @@ export const TeamMembersAdd = () => {
               </div>
             ) : (
               <div className="w-full space-y-3">
-                {filteredUsers.map((user: UserType) => (
+                {filteredUsers.map((user: User) => (
                   <AvailableUserCard
                     user={user}
                     selectMember={handleSelectMember}

@@ -8,23 +8,32 @@ import {
   useRealtimeChat,
   useRealtimeTicket,
 } from '@app/features/tickets/hooks';
-import { UserType } from '@app/types/types';
+import { User } from '@app/types/types';
 import { TicketCard } from '@app/features/tickets/components/TicketCard';
 import { TicketStatusBadge } from '@app/features/tickets/components/TicketStatusBadge';
 import { formatDateTime, isMessageOwner } from '@app/features/tickets/utils/ticketHelpers';
 import { ChatMessage } from '@app/features/tickets/components/ChatMessage';
 import { MessageInput } from '@app/features/tickets/components/MessageInput';
 import { CreateTicketValue } from '@app/schemas/ticketSchema';
+import { useAbility } from '@casl/react';
+import { AbilityContext } from '@app/casl/AbilityContext';
+import { Navigate } from 'react-router-dom';
+import routeNames from '@app/routes/route-names';
 
 export const CtoTickets = () => {
+  const ability = useAbility(AbilityContext);
   const { user: currentUser } = useAuth();
-  const [users, setUsers] = useState<UserType[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [expandedDescriptions, setExpandedDescriptions] = useState<Set<string>>(new Set());
   const [employeeId, setEmployeeId] = useState<string>('');
   const [createForm, setCreateForm] = useState<CreateTicketValue>(DEFAULT_CREATE_TICKET_FORM);
   const [newMessage, setNewMessage] = useState('');
+
+  if (ability.cannot('manage', 'Ticket')) {
+    <Navigate to={routeNames.notAuthorized()} />;
+  }
 
   // Real-time ticket management
   const { tickets, ticketCounts, isLoading, createNewTicket, isCreating, hasAwaitingConfirmation } =
